@@ -1,0 +1,119 @@
+---
+title: "Mr. Tochukwu's Assignment"
+author: "Kehinde Richard O."
+date: "March 9, 2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Assignment On R
+#### With the dataset given to you 
+1. Perform Exploratory Data Analysis
+2. Perform two appropiate statistical analysis and interpretation
+3. Plot five graphical charts
+
+
+# About The Dataset
+## The Chatterjee–Price Attitude Data
+From a survey of the clerical employees of a large financial organization, the data are aggregated from the questionnaires of the approximately 35 employees for each of 30 (randomly selected) departments. The numbers give the percent proportion of favourable responses to seven questions in each department.
+
+Attitude is a data frame with 30 observations on 7 variables. The first column are the short names from the reference, the second one the variable names in the data frame:
+
+## Operations and Outputs
+First we load the dataset on R with `data(attitude)` 
+```{r}
+data(attitude)
+head(attitude)
+```
+### To view the column names
+we use `names(attitude)` to see all the column and row names on the dataset
+```{r}
+names(attitude)
+```
+
+## Performing Exploatory data analysis
+
+```{r}
+summary(attitude)
+```
+From the above result, we can see that 
+
+
+
+
+
+
+## Performing two appropiate analysis with the dataset
+The two analysis to be performed using the dataset is Correlation and Multiple Regression analysis
+
+#### First we filter the two columns we want to use
+```{r}
+attach(attitude)
+rating = subset(attitude, select = rating)
+complaints = subset(attitude, select = complaints)
+head(rating)
+head(complaints)
+```
+
+### Multiple Regression 
+using Rating as the dependent variable, and all other variables as the independent variables
+```{r}
+reg <- lm(rating ~ complaints + privileges + raises + critical + learning + advance, data = attitude)
+reg
+summary(reg)
+```
+#### Interpetaion
+From the Multiple regression result above, we can see that there is an evidence of significance relationship between rating and Compliants, with the p-value of 0.0009 which is less than 0.05 (95% confidence interval)and its intercept of 0.6132, which implies that any changes in complaints will have a positive impact in rating.
+Where, there is evidence of no significance relationship in rating and all others relation, we can also see from the result that privileged and advance contributes negatively to Rating, also with no significance realtionship.
+
+### Correlation Analysis
+Correlation Analysis of Rating and Complaints in attitude dataset, using rating as the independent Variable and Complaint as the dependent variables.
+```{r}
+cor = cor.test(attitude$rating, attitude$complaints)
+cor
+```
+#### Interpretation
+From the result of the pearsom correlation above, we can see that rating and complaints have a significance relationship, with thier association degree of 0.825 which implies there is a very strong correlation between them.
+
+
+## Charts
+### Histogram of Rating
+```{r}
+ head(rating)
+hist(attitude$rating, col = "green", main = " Histogram of Rating", xlab = " Rating")
+```
+
+
+### Bar plot
+seleting just 5 observations from rating, complaints and priviledges
+```{r}
+rating5 <- attitude$rating[1:5]
+rating5
+complaints5 <- attitude$complaints[1:5]
+complaints5
+learning5 <- attitude$learning[1:5]
+learning5
+A <- data.frame(rating5, complaints5, learning5)
+head(A)
+barplot(as.matrix(A), col = c("blue", "yellow", "red", "green", "orange"), xlab = " Attitudes", ylab = "Frequencies", main = " Multiple Bar Chart for Rating, Complaints and Learning", beside = TRUE)
+legend("topright",c("A", "B", "C", "D","E"),bty = "n", fill = c("blue", "yellow", "red", "green", "orange"), cex = 0.8)
+```
+
+### Scarttered and Line Plots
+```{r}
+plot(attitude$rating, col = "blue", main = "line plot for rating")
+lines(attitude$rating, col = "blue")
+```
+
+### Scarttered Plot
+```{r}
+plot(attitude$rating, attitude$raises, col = "red", main = " Scattered plot of rating on raises")
+```
+
+
+### Scarttered Matrix Plot
+```{r}
+plot(data.frame(attitude$rating, attitude$raises, attitude$learning), main = " Scattered Matrix plot of rating, raises and learning")
+```
+
